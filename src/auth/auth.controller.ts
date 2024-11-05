@@ -1,13 +1,13 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService, LoginResponse } from './auth.service';
-import { User } from 'src/user/user.entity';
+import { UserTest } from 'src/user-test/user-test.entity';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('registor')
-  async register(@Body() newUser: User): Promise<User> {
+  async register(@Body() newUser: UserTest): Promise<UserTest> {
     try {
       return this.authService.register(newUser);
     } catch (error) {
@@ -16,7 +16,7 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Body() UsernameAndPassword: User): Promise<LoginResponse> {
+  async login(@Body() UsernameAndPassword: UserTest): Promise<LoginResponse> {
     return this.authService.login(UsernameAndPassword);
   }
 }

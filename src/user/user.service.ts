@@ -4,6 +4,7 @@ import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserExistsException } from './exceptions/user-exists.exception';
 import { UserNotFoundException } from './exceptions/User-not-found.exception';
+import { CreateUserDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -12,7 +13,7 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async createUser(createUserDto: Partial<User>): Promise<User> {
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
     try {
       // check if username already exist
       const existsingUser = await this.userRepository.findOne({

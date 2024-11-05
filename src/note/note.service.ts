@@ -3,23 +3,41 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Note } from './note.entity';
 import { User } from 'src/user/user.entity';
+import { CreateNoteDto } from './dto/create-note.dto';
+import { UserNotFoundException } from 'src/user/exceptions/User-not-found.exception';
 
 @Injectable()
 export class NoteService {
   constructor(
     @InjectRepository(Note)
     private readonly noteRepository: Repository<Note>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
-  async createNote(user: User, newNote: Note): Promise<Note> {
+  async createNote(
+    authUser: User,
+    createNoteDto: CreateNoteDto,
+  ): Promise<Note> {
     try {
-      const note = this.noteRepository.create({
-        ...newNote,
-        user, // Associate the note with the user
+      //get User information if user not found do this
+      const user = await this.userRepository.findOne({
+        where: { id: authUser.id },
       });
-      return note;
+      console.log(user);
+      if (!user) {
+        throw new UserNotFoundException();
+      }
+
+      const note = this.noteRepository.create({
+        ...createNoteDto,
+        user,
+      });
+
+      return await this.noteRepository.save(note);
     } catch (error) {
-      console.log('Oof the old you catch an unexpected error :' + error);
+      console.log('Error creating note:', error);
+      throw error; // Rethrow error for further handling
     }
   }
 }

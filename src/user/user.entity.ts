@@ -12,6 +12,6 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany(() => Note, (note) => note.user)
-  notes: Note[];
+  @OneToMany(() => Note, (note) => note.user) // Establish the inverse relation
+  notes: Note[]; // Array of notes associated with the user
 }

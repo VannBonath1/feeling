@@ -1,8 +1,8 @@
-import { User } from 'src/user/user.entity';
+import { UserTest } from 'src/user-test/user-test.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Note {
+export class NoteTest {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -12,6 +12,6 @@ export class Note {
   @Column()
   content: string;
 
-  @ManyToOne(() => User, (user) => user.notes) // Eager loading for user
-  user: User; // Associate the note with a user
+  @ManyToOne(() => UserTest, (userTest) => userTest.noteTest)
+  userTest: UserTest;
 }

@@ -8,6 +8,17 @@ import { DataSource } from 'typeorm';
 import { Note } from './note/note.entity';
 import { NoteModule } from './note/note.module';
 import { AuthModule } from './auth/auth.module';
+import { AuthorModule } from './author/author.module';
+import { BookModule } from './book/book.module';
+import { Author } from './author/author.entity';
+import { Book } from './book/book.entity';
+import { UserTestController } from './user-test/user-test.controller';
+import { UserTestModule } from './user-test/user-test.module';
+import { NoteTestController } from './note-test/note-test.controller';
+import { NoteTestService } from './note-test/note-test.service';
+import { NoteTestModule } from './note-test/note-test.module';
+import { UserTest } from './user-test/user-test.entity';
+import { NoteTest } from './note-test/note-test.entity';
 
 @Module({
   imports: [
@@ -18,13 +29,19 @@ import { AuthModule } from './auth/auth.module';
       username: 'postgres',
       password: 'admin',
       database: 'postgres',
-      entities: [User, Note], // Add your entities here
+      entities: [User, Note, Author, Book, UserTest, NoteTest], // Add your entities here
       synchronize: true, // Should be false in production
     }),
+    TypeOrmModule.forFeature([UserTest, NoteTest, AuthModule]),
     UserModule,
     NoteModule,
-    AuthModule, // Register entity with TypeORM
+    AuthModule,
+    AuthorModule,
+    BookModule,
+    UserTestModule,
+    NoteTestModule,
   ],
+
   controllers: [AppController],
   providers: [AppService],
 })
