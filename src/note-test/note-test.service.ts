@@ -62,4 +62,13 @@ export class NoteTestService {
       throw error;
     }
   }
+
+  async getAllNoteTest(): Promise<NoteTest[]> {
+    try {
+      return await this.noteTestRepository.find({ relations: ['userTest'] });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }
